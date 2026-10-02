@@ -1,4 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PropertiesComponent">{}</component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d27cda00-5542-4428-9c37-fe76ef62159d" name="Changes" comment="v1">
+      <change beforePath="$PROJECT_DIR$/pkg/env.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/env/env.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/env_tomap.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/env/env_tomap.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/error.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/env/error.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../Program Files/Go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "pinedadaniel"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/pinedadaniel/go-load-env.git",
+    "accountId": "5711ded1-70bb-414a-a5de-19bdeb48d848"
+  }
+}]]></component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000000102892155" />
+      <entry key="S2" value="1.0168346138805484" />
+      <entry key="S5" value="1.3279553299559632" />
+      <entry key="S10" value="2.0473282821891505" />
+      <entry key="S30" value="4.243454960322351" />
+      <entry key="S60" value="6.577728092784914" />
+      <entry key="M2" value="9.14267537731545" />
+      <entry key="M5" value="11.705230777383356" />
+      <entry key="M10" value="13.675214841613457" />
+      <entry key="M15" value="15.723016437306283" />
+      <entry key="M30" value="20.739725057313652" />
+      <entry key="H1" value="25.758997470970076" />
+      <entry key="H2" value="29.36775334275675" />
+      <entry key="H4" value="31.539064631508904" />
+      <entry key="D1" value="33.568115916797986" />
+      <entry key="W1" value="33.93774773025492" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.7526233737055336" />
+      <entry key="MS500" value="0.9447470497786102" />
+      <entry key="S2" value="1.0020648139571073" />
+      <entry key="S5" value="1.315346413230178" />
+      <entry key="S10" value="2.0284498226054684" />
+      <entry key="S30" value="4.216403410775043" />
+      <entry key="S60" value="6.5513785785968315" />
+      <entry key="M2" value="9.122187831888901" />
+      <entry key="M5" value="11.694084860000451" />
+      <entry key="M10" value="13.66898754227406" />
+      <entry key="M15" value="15.718697922637645" />
+      <entry key="M30" value="20.73747058374391" />
+      <entry key="H1" value="25.75784235191141" />
+      <entry key="H2" value="29.367167988307838" />
+      <entry key="H4" value="31.538769871852637" />
+      <entry key="D1" value="33.56806648779926" />
+      <entry key="W1" value="33.937740661378484" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="3K9gK0f8Ym08LQqZ9F52IQ22mCb" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.GoLinterPluginOnboardingV2": "true",
+    "RunOnceActivity.GoLinterPluginStorageMigration": "true",
+    "RunOnceActivity.GoOptimizationToolWindowEnableInLayout.v333333": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.analysis.ui.options.defaults": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "v1",
+    "go.sdk.automatically.set": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "C:/Users/Pine",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Pine\OneDrive\Desktop\repos\go-load-env\pkg\env" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-63c95d513abe-9addb268e56c-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-262.9437.286" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-GO-262.9437.286" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d27cda00-5542-4428-9c37-fe76ef62159d" name="Changes" comment="" />
+      <created>1790975129899</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1790975129899</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="v1" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1" />
+  </component>
 </project>
