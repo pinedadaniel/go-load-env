@@ -10,9 +10,11 @@ import (
 	"strings"
 	"time"
 	"unicode"
+
+	"github.com/joho/godotenv"
 )
 
-var defaultBuiltInParsers = map[reflect.Kind]ParserFunc{ //nolint:gochecknoglobals
+var defaultBuiltInParsers = map[reflect.Kind]ParserFunc{
 	reflect.Bool: func(v string) (interface{}, error) {
 		return strconv.ParseBool(v)
 	},
@@ -147,7 +149,7 @@ type Options struct {
 	// SetDefaultsForZeroValuesOnly defines whether to set defaults for zero values
 	// If the `env` variable for the value is not set
 	// and `envDefault` is set
-	// and the value is not a zero value for the type
+	// and the value is not a zero value for the the type
 	// and SetDefaultsForZeroValuesOnly=true
 	// the value from `envDefault` will be ignored
 	// Useful for mixing default values from `envDefault` and struct initialization
@@ -254,23 +256,21 @@ func optionsWithEnvPrefix(field reflect.StructField, opts Options) Options {
 	}
 }
 
-// Parse parses a struct containing `env` tags and loads its values from
+// Load and parses a struct containing `env` tags and loads its values from
 // environment variables.
-func Parse(v interface{}) error {
-	return parseInternal(v, setField, defaultOptions())
+func Load(v interface{}) error {
+	return loadInternal(v, setField, defaultOptions())
 }
 
-// ParseWithOptions parses a struct containing `env` tags and loads its values from
-// environment variables.
-func ParseWithOptions(v interface{}, opts Options) error {
-	return parseInternal(v, setField, customOptions(opts))
+func LoadWithOptions(v interface{}, opts Options) error {
+	return loadInternal(v, setField, customOptions(opts))
 }
 
 // ParseAs parses the given struct type containing `env` tags and loads its
 // values from environment variables.
 func ParseAs[T any]() (T, error) {
 	var t T
-	err := Parse(&t)
+	err := Load(&t)
 	return t, err
 }
 
@@ -278,7 +278,7 @@ func ParseAs[T any]() (T, error) {
 // loads its values from environment variables.
 func ParseAsWithOptions[T any](opts Options) (T, error) {
 	var t T
-	err := ParseWithOptions(&t, opts)
+	err := LoadWithOptions(&t, opts)
 	return t, err
 }
 
@@ -315,6 +315,10 @@ func GetFieldParamsWithOptions(v interface{}, opts Options) ([]FieldParams, erro
 	}
 
 	return result, nil
+}
+func loadInternal(v interface{}, processField processFieldFn, opts Options) error {
+	_ = godotenv.Load()
+	return parseInternal(v, processField, opts)
 }
 
 func parseInternal(v interface{}, processField processFieldFn, opts Options) error {

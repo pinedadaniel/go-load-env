@@ -6,17 +6,6 @@ import (
 	"strings"
 )
 
-// AggregateError is an aggregated error wrapper to combine gathered errors.
-// This allows either to display all errors or convert them individually
-// List of the available errors
-// ParseError
-// NotStructPtrError
-// NoParserError
-// NoSupportedTagOptionError
-// VarIsNotSetError
-// EmptyVarError
-// LoadFileContentError
-// ParseValueError
 type AggregateError struct {
 	Errors []error
 }
