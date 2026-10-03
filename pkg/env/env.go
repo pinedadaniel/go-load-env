@@ -259,10 +259,12 @@ func optionsWithEnvPrefix(field reflect.StructField, opts Options) Options {
 // Load and parses a struct containing `env` tags and loads its values from
 // environment variables.
 func Load(v interface{}) error {
+	_ = godotenv.Load()
 	return loadInternal(v, setField, defaultOptions())
 }
 
 func LoadWithOptions(v interface{}, opts Options) error {
+	_ = godotenv.Load()
 	return loadInternal(v, setField, customOptions(opts))
 }
 
@@ -317,7 +319,6 @@ func GetFieldParamsWithOptions(v interface{}, opts Options) ([]FieldParams, erro
 	return result, nil
 }
 func loadInternal(v interface{}, processField processFieldFn, opts Options) error {
-	_ = godotenv.Load()
 	return parseInternal(v, processField, opts)
 }
 
