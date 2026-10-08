@@ -1,3 +1,18 @@
+// Package env is a simple, zero-dependencies library to parse environment
+// variables into structs.
+//
+// Example:
+//
+//	type config struct {
+//		Home string `env:"HOME"`
+//	}
+//	// parse
+//	var cfg config
+//	err := env.Parse(&cfg)
+//	// or parse with generics
+//	cfg, err := env.ParseAs[config]()
+//
+// Check the examples and README for more detailed usage.
 package env
 
 import (
@@ -10,11 +25,9 @@ import (
 	"strings"
 	"time"
 	"unicode"
-
-	"github.com/joho/godotenv"
 )
 
-var defaultBuiltInParsers = map[reflect.Kind]ParserFunc{
+var defaultBuiltInParsers = map[reflect.Kind]ParserFunc{ //nolint:gochecknoglobals
 	reflect.Bool: func(v string) (interface{}, error) {
 		return strconv.ParseBool(v)
 	},
@@ -149,7 +162,7 @@ type Options struct {
 	// SetDefaultsForZeroValuesOnly defines whether to set defaults for zero values
 	// If the `env` variable for the value is not set
 	// and `envDefault` is set
-	// and the value is not a zero value for the the type
+	// and the value is not a zero value for the type
 	// and SetDefaultsForZeroValuesOnly=true
 	// the value from `envDefault` will be ignored
 	// Useful for mixing default values from `envDefault` and struct initialization
@@ -256,23 +269,23 @@ func optionsWithEnvPrefix(field reflect.StructField, opts Options) Options {
 	}
 }
 
-// Load and parses a struct containing `env` tags and loads its values from
+// Parse parses a struct containing `env` tags and loads its values from
 // environment variables.
-func Load(v interface{}) error {
-	_ = godotenv.Load()
-	return loadInternal(v, setField, defaultOptions())
+func Parse(v interface{}) error {
+	return parseInternal(v, setField, defaultOptions())
 }
 
-func LoadWithOptions(v interface{}, opts Options) error {
-	_ = godotenv.Load()
-	return loadInternal(v, setField, customOptions(opts))
+// ParseWithOptions parses a struct containing `env` tags and loads its values from
+// environment variables.
+func ParseWithOptions(v interface{}, opts Options) error {
+	return parseInternal(v, setField, customOptions(opts))
 }
 
 // ParseAs parses the given struct type containing `env` tags and loads its
 // values from environment variables.
 func ParseAs[T any]() (T, error) {
 	var t T
-	err := Load(&t)
+	err := Parse(&t)
 	return t, err
 }
 
@@ -280,7 +293,7 @@ func ParseAs[T any]() (T, error) {
 // loads its values from environment variables.
 func ParseAsWithOptions[T any](opts Options) (T, error) {
 	var t T
-	err := LoadWithOptions(&t, opts)
+	err := ParseWithOptions(&t, opts)
 	return t, err
 }
 
@@ -318,13 +331,10 @@ func GetFieldParamsWithOptions(v interface{}, opts Options) ([]FieldParams, erro
 
 	return result, nil
 }
-func loadInternal(v interface{}, processField processFieldFn, opts Options) error {
-	return parseInternal(v, processField, opts)
-}
 
 func parseInternal(v interface{}, processField processFieldFn, opts Options) error {
 	ptrRef := reflect.ValueOf(v)
-	if ptrRef.Kind() != reflect.Ptr {
+	if ptrRef.Kind() != reflect.Pointer {
 		return newAggregateError(NotStructPtrError{})
 	}
 	ref := ptrRef.Elem()
@@ -369,7 +379,7 @@ func doParseField(
 	if !refField.CanSet() {
 		return nil
 	}
-	if refField.Kind() == reflect.Ptr && refField.Elem().Kind() == reflect.Struct && !refField.IsNil() {
+	if refField.Kind() == reflect.Pointer && refField.Elem().Kind() == reflect.Struct && !refField.IsNil() {
 		return parseInternal(refField.Interface(), processField, optionsWithEnvPrefix(refTypeField, opts))
 	}
 	if refField.Kind() == reflect.Struct && refField.CanAddr() && refField.Type().Name() == "" {
@@ -409,7 +419,7 @@ func isSliceOfStructs(refTypeField reflect.StructField) bool {
 	field := refTypeField.Type
 
 	// *[]struct
-	if field.Kind() == reflect.Ptr {
+	if field.Kind() == reflect.Pointer {
 		field = field.Elem()
 		if field.Kind() == reflect.Slice && field.Elem().Kind() == reflect.Struct {
 			return true
@@ -452,7 +462,7 @@ func doParseSlice(ref reflect.Value, processField processFieldFn, opts Options) 
 
 		sliceType := ref.Type()
 		var initialized int
-		if reflect.Ptr == ref.Kind() {
+		if reflect.Pointer == ref.Kind() {
 			sliceType = sliceType.Elem()
 			// Due to the rest of code the pre-initialized slice has no chance for this situation
 			initialized = 0
@@ -476,7 +486,7 @@ func doParseSlice(ref reflect.Value, processField processFieldFn, opts Options) 
 		}
 
 		if result.Len() > 0 {
-			if reflect.Ptr == ref.Kind() {
+			if reflect.Pointer == ref.Kind() {
 				resultPtr := reflect.New(sliceType)
 				resultPtr.Elem().Set(result)
 				result = resultPtr
@@ -659,7 +669,7 @@ func set(field reflect.Value, sf reflect.StructField, value string, funcMap map[
 
 	typee := sf.Type
 	fieldee := field
-	if typee.Kind() == reflect.Ptr {
+	if typee.Kind() == reflect.Pointer {
 		typee = typee.Elem()
 		fieldee = field.Elem()
 	}
@@ -704,7 +714,7 @@ func handleSlice(field reflect.Value, value string, sf reflect.StructField, func
 	parts := strings.Split(value, separator)
 
 	typee := sf.Type.Elem()
-	if typee.Kind() == reflect.Ptr {
+	if typee.Kind() == reflect.Pointer {
 		typee = typee.Elem()
 	}
 
@@ -727,7 +737,7 @@ func handleSlice(field reflect.Value, value string, sf reflect.StructField, func
 			return newParseError(sf, err)
 		}
 		v := reflect.ValueOf(r).Convert(typee)
-		if sf.Type.Elem().Kind() == reflect.Ptr {
+		if sf.Type.Elem().Kind() == reflect.Pointer {
 			v = reflect.New(typee)
 			v.Elem().Set(reflect.ValueOf(r).Convert(typee))
 		}
@@ -791,7 +801,7 @@ func handleMap(field reflect.Value, value string, sf reflect.StructField, funcMa
 }
 
 func asTextUnmarshaler(field reflect.Value) encoding.TextUnmarshaler {
-	if field.Kind() == reflect.Ptr {
+	if field.Kind() == reflect.Pointer {
 		if field.IsNil() {
 			field.Set(reflect.New(field.Type().Elem()))
 		}
@@ -813,7 +823,7 @@ func parseTextUnmarshalers(field reflect.Value, data []string, sf reflect.Struct
 	for i, v := range data {
 		sv := slice.Index(i)
 		kind := sv.Kind()
-		if kind == reflect.Ptr {
+		if kind == reflect.Pointer {
 			sv = reflect.New(elemType.Elem())
 		} else {
 			sv = sv.Addr()
@@ -822,7 +832,7 @@ func parseTextUnmarshalers(field reflect.Value, data []string, sf reflect.Struct
 		if err := tm.UnmarshalText([]byte(v)); err != nil {
 			return newParseError(sf, err)
 		}
-		if kind == reflect.Ptr {
+		if kind == reflect.Pointer {
 			slice.Index(i).Set(sv)
 		}
 	}
@@ -839,5 +849,5 @@ func ToMap(env []string) map[string]string {
 }
 
 func isInvalidPtr(v reflect.Value) bool {
-	return reflect.Ptr == v.Kind() && v.Elem().Kind() == reflect.Invalid
+	return reflect.Pointer == v.Kind() && v.Elem().Kind() == reflect.Invalid
 }
